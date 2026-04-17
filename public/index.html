@@ -8,21 +8,22 @@
   <link href="https://fonts.googleapis.com/css2?family=Azeret+Mono:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg:       #0b0c0f;
-      --surface:  #13151a;
-      --border:   #1e2028;
-      --border2:  #2a2d38;
-      --accent:   #e8ff47;
-      --accent2:  #47d4ff;
-      --text:     #e8eaf0;
-      --muted:    #555a6e;
-      --danger:   #ff6b6b;
-      --mono:     'Azeret Mono', monospace;
-      --sans:     'DM Sans', sans-serif;
+      --bg:      #0b0c0f;
+      --surface: #13151a;
+      --border:  #1e2028;
+      --border2: #2a2d38;
+      --accent:  #e8ff47;
+      --accent2: #47d4ff;
+      --accent3: #ff9f47;
+      --green:   #47ffb0;
+      --purple:  #c47aff;
+      --text:    #e8eaf0;
+      --muted:   #555a6e;
+      --danger:  #ff6b6b;
+      --mono:    'Azeret Mono', monospace;
+      --sans:    'DM Sans', sans-serif;
     }
-
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     body {
       background: var(--bg);
       color: var(--text);
@@ -32,8 +33,6 @@
       flex-direction: column;
       align-items: center;
     }
-
-    /* Subtle grid texture */
     body::before {
       content: '';
       position: fixed;
@@ -46,20 +45,16 @@
       pointer-events: none;
       z-index: 0;
     }
-
     .wrapper {
       position: relative;
       z-index: 1;
       width: 100%;
-      max-width: 680px;
+      max-width: 720px;
       padding: 48px 24px 80px;
     }
 
     /* Header */
-    header {
-      margin-bottom: 52px;
-    }
-
+    header { margin-bottom: 44px; }
     .logo {
       font-family: var(--mono);
       font-size: 11px;
@@ -72,49 +67,34 @@
       align-items: center;
       gap: 8px;
     }
-
     .logo-dot {
       width: 6px; height: 6px;
       border-radius: 50%;
       background: var(--accent);
       animation: pulse 2s ease-in-out infinite;
     }
-
     @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.4; transform: scale(0.8); }
+      0%,100% { opacity:1; transform:scale(1); }
+      50%      { opacity:.4; transform:scale(.8); }
     }
-
     h1 {
       font-family: var(--mono);
-      font-size: clamp(28px, 6vw, 42px);
+      font-size: clamp(26px, 5.5vw, 40px);
       font-weight: 700;
       letter-spacing: -0.02em;
       line-height: 1.1;
-      color: var(--text);
     }
-
-    h1 span {
-      color: var(--accent);
-    }
-
-    .subtitle {
-      margin-top: 10px;
-      font-size: 14px;
-      color: var(--muted);
-      font-weight: 300;
-      letter-spacing: 0.01em;
-    }
+    h1 span { color: var(--accent); }
+    .subtitle { margin-top: 8px; font-size: 13px; color: var(--muted); font-weight: 300; }
 
     /* Input card */
     .input-card {
       background: var(--surface);
       border: 1px solid var(--border2);
       border-radius: 12px;
-      padding: 28px;
+      padding: 24px 28px;
       margin-bottom: 12px;
     }
-
     .field-label {
       font-family: var(--mono);
       font-size: 10px;
@@ -124,100 +104,56 @@
       margin-bottom: 10px;
       display: block;
     }
-
-    .input-row {
-      display: flex;
-      gap: 10px;
-    }
-
+    .input-row { display: flex; gap: 10px; }
     input[type="text"] {
       flex: 1;
       background: var(--bg);
       border: 1px solid var(--border2);
       border-radius: 8px;
-      padding: 14px 18px;
+      padding: 13px 16px;
       font-family: var(--mono);
       font-size: 16px;
       font-weight: 500;
       color: var(--text);
       outline: none;
-      transition: border-color 0.15s, box-shadow 0.15s;
+      transition: border-color .15s, box-shadow .15s;
       min-width: 0;
     }
-
-    input[type="text"]::placeholder {
-      color: var(--muted);
-      font-weight: 300;
-    }
-
-    input[type="text"]:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(232, 255, 71, 0.08);
-    }
-
-    input[type="text"].error {
-      border-color: var(--danger);
-      box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.08);
-    }
-
+    input[type="text"]::placeholder { color: var(--muted); font-weight: 300; }
+    input[type="text"]:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(232,255,71,.08); }
+    input[type="text"].error { border-color: var(--danger); box-shadow: 0 0 0 3px rgba(255,107,107,.08); }
     .btn-convert {
       background: var(--accent);
       color: #0b0c0f;
       border: none;
       border-radius: 8px;
-      padding: 14px 24px;
+      padding: 13px 24px;
       font-family: var(--mono);
       font-size: 13px;
       font-weight: 700;
-      letter-spacing: 0.05em;
+      letter-spacing: .05em;
       text-transform: uppercase;
       cursor: pointer;
       white-space: nowrap;
-      transition: background 0.15s, transform 0.1s;
+      transition: background .15s, transform .1s;
     }
-
     .btn-convert:hover { background: #d4eb2e; }
-    .btn-convert:active { transform: scale(0.97); }
-
-    .error-msg {
-      font-family: var(--mono);
-      font-size: 11px;
-      color: var(--danger);
-      margin-top: 8px;
-      display: none;
-    }
-
-    /* Quick-insert hint */
-    .hint {
-      font-size: 12px;
-      color: var(--muted);
-      margin-top: 10px;
-    }
-
+    .btn-convert:active { transform: scale(.97); }
+    .error-msg { font-family: var(--mono); font-size: 11px; color: var(--danger); margin-top: 8px; display: none; }
+    .hint { font-size: 12px; color: var(--muted); margin-top: 10px; }
     .hint button {
-      background: none;
-      border: none;
-      color: var(--accent2);
-      font-family: var(--mono);
-      font-size: 12px;
-      cursor: pointer;
-      padding: 0;
-      text-decoration: underline;
-      text-underline-offset: 2px;
+      background: none; border: none;
+      color: var(--accent2); font-family: var(--mono); font-size: 12px;
+      cursor: pointer; padding: 0; text-decoration: underline; text-underline-offset: 2px;
     }
 
     /* Results */
-    #results {
-      display: none;
-      animation: slideUp 0.3s ease;
-    }
-
+    #results { display: none; animation: slideUp .3s ease; margin-top: 24px; }
     @keyframes slideUp {
-      from { opacity: 0; transform: translateY(12px); }
-      to   { opacity: 1; transform: translateY(0); }
+      from { opacity:0; transform:translateY(12px); }
+      to   { opacity:1; transform:translateY(0); }
     }
-
-    .section-label {
+    .sec-label {
       font-family: var(--mono);
       font-size: 10px;
       letter-spacing: 0.2em;
@@ -226,7 +162,7 @@
       margin-bottom: 12px;
     }
 
-    /* Main result block */
+    /* Converted timestamp card */
     .result-main {
       background: var(--surface);
       border: 1px solid var(--border2);
@@ -234,9 +170,8 @@
       overflow: hidden;
       margin-bottom: 12px;
     }
-
     .result-main-header {
-      background: linear-gradient(135deg, rgba(232,255,71,0.06) 0%, transparent 60%);
+      background: linear-gradient(135deg, rgba(232,255,71,.06) 0%, transparent 60%);
       border-bottom: 1px solid var(--border2);
       padding: 20px 24px 16px;
       display: flex;
@@ -244,141 +179,91 @@
       align-items: flex-start;
       gap: 12px;
     }
-
-    .epoch-display {
-      font-family: var(--mono);
-      font-size: 11px;
-      color: var(--muted);
-      margin-bottom: 4px;
-      letter-spacing: 0.1em;
-    }
-
-    .datetime-big {
-      font-family: var(--mono);
-      font-size: clamp(18px, 4vw, 26px);
-      font-weight: 600;
-      color: var(--text);
-      letter-spacing: -0.01em;
-    }
-
+    .epoch-display { font-family: var(--mono); font-size: 11px; color: var(--muted); margin-bottom: 4px; letter-spacing: .1em; }
+    .datetime-big { font-family: var(--mono); font-size: clamp(17px, 3.5vw, 24px); font-weight: 600; letter-spacing: -.01em; }
     .datetime-big .date-part { color: var(--accent); }
+    .meta-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      padding: 16px 24px 20px;
+    }
+    .meta-key { font-family: var(--mono); font-size: 10px; letter-spacing: .15em; text-transform: uppercase; color: var(--muted); margin-bottom: 3px; }
+    .meta-val { font-family: var(--mono); font-size: 13px; font-weight: 500; color: var(--text); }
 
+    /* Copy all button */
     .btn-copy {
       display: flex;
       align-items: center;
       gap: 6px;
-      background: rgba(255,255,255,0.04);
+      background: rgba(255,255,255,.04);
       border: 1px solid var(--border2);
       border-radius: 6px;
       padding: 8px 14px;
       font-family: var(--mono);
       font-size: 11px;
       font-weight: 600;
-      letter-spacing: 0.08em;
+      letter-spacing: .08em;
       text-transform: uppercase;
       color: var(--muted);
       cursor: pointer;
       white-space: nowrap;
-      transition: all 0.15s;
+      transition: all .15s;
       flex-shrink: 0;
     }
+    .btn-copy:hover { background: rgba(232,255,71,.06); border-color: var(--accent); color: var(--accent); }
+    .btn-copy.copied { background: rgba(232,255,71,.1); border-color: var(--accent); color: var(--accent); }
 
-    .btn-copy:hover {
-      background: rgba(232,255,71,0.06);
-      border-color: var(--accent);
-      color: var(--accent);
-    }
+    /* Deadline cards */
+    #deadlines-container { display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px; }
 
-    .btn-copy.copied {
-      background: rgba(232,255,71,0.1);
-      border-color: var(--accent);
-      color: var(--accent);
-    }
-
-    .result-main-body {
-      padding: 16px 24px 20px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-    }
-
-    .meta-item {}
-
-    .meta-key {
-      font-family: var(--mono);
-      font-size: 10px;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 3px;
-    }
-
-    .meta-val {
-      font-family: var(--mono);
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--text);
-    }
-
-    /* Calculated timestamp block */
-    .result-calc {
+    .deadline-card {
       background: var(--surface);
       border: 1px solid var(--border2);
       border-radius: 12px;
       overflow: hidden;
-      margin-bottom: 12px;
       position: relative;
     }
-
-    .result-calc::before {
+    .deadline-card::before {
       content: '';
       position: absolute;
       top: 0; left: 0; right: 0;
       height: 2px;
-      background: linear-gradient(90deg, var(--accent2), transparent);
     }
+    .dl-c0::before { background: linear-gradient(90deg, var(--accent2), transparent); }
+    .dl-c1::before { background: linear-gradient(90deg, var(--accent3), transparent); }
+    .dl-c2::before { background: linear-gradient(90deg, var(--green), transparent); }
+    .dl-c3::before { background: linear-gradient(90deg, var(--purple), transparent); }
+    .dl-c4::before { background: linear-gradient(90deg, var(--accent), transparent); }
 
-    .result-calc-inner {
-      padding: 20px 24px;
+    .deadline-card-inner { padding: 18px 22px 20px; }
+    .dl-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 16px;
     }
-
-    .calc-label {
+    .dl-name {
       font-family: var(--mono);
       font-size: 10px;
-      letter-spacing: 0.2em;
+      letter-spacing: .2em;
       text-transform: uppercase;
-      color: var(--accent2);
-      margin-bottom: 6px;
+      margin-bottom: 4px;
     }
+    .dl-c0 .dl-name { color: var(--accent2); }
+    .dl-c1 .dl-name { color: var(--accent3); }
+    .dl-c2 .dl-name { color: var(--green); }
+    .dl-c3 .dl-name { color: var(--purple); }
+    .dl-c4 .dl-name { color: var(--accent); }
 
-    .calc-rule {
-      font-size: 13px;
-      color: var(--muted);
-      margin-bottom: 14px;
-      line-height: 1.5;
-    }
+    .dl-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+    .dl-date-big { font-family: var(--mono); font-size: clamp(15px, 3vw, 20px); font-weight: 600; color: var(--text); text-align: right; }
+    .dl-epoch-small { font-family: var(--mono); font-size: 11px; color: var(--muted); margin-top: 3px; text-align: right; }
 
-    .calc-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-    }
+    .dl-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
 
-    .calc-val-big {
-      font-family: var(--mono);
-      font-size: clamp(15px, 3vw, 20px);
-      font-weight: 600;
-      color: var(--accent2);
-    }
-
-    /* Divider */
-    .divider {
-      height: 1px;
-      background: var(--border);
-      margin: 20px 0;
-    }
-
-    /* UTC strip at bottom */
+    /* Bottom strip */
     .utc-strip {
       background: var(--surface);
       border: 1px solid var(--border2);
@@ -388,327 +273,357 @@
       gap: 24px;
       flex-wrap: wrap;
     }
+    .utc-key { font-family: var(--mono); font-size: 9px; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); margin-bottom: 2px; }
+    .utc-val { font-family: var(--mono); font-size: 13px; font-weight: 500; color: var(--text); }
 
-    .utc-item {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-
-    .utc-key {
-      font-family: var(--mono);
-      font-size: 9px;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
-
-    .utc-val {
-      font-family: var(--mono);
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--text);
-    }
-
-    @media (max-width: 500px) {
-      .result-main-body { grid-template-columns: 1fr; }
-      .calc-grid { grid-template-columns: 1fr; }
+    @media (max-width: 520px) {
       .input-row { flex-direction: column; }
-      .btn-convert { width: 100%; }
-      .result-main-header { flex-direction: column; }
+      .btn-convert { width: 100%; text-align: center; }
+      .meta-grid { grid-template-columns: 1fr; }
+      .dl-grid { grid-template-columns: 1fr 1fr; }
+      .dl-top { flex-direction: column; }
+      .dl-date-big, .dl-epoch-small { text-align: left; }
     }
   </style>
 </head>
 <body>
-  <div class="wrapper">
-    <header>
-      <div class="logo"><span class="logo-dot"></span>Utility Tool</div>
-      <h1>EPOCH<span>·</span>CONVERTER</h1>
-      <p class="subtitle">Decode timestamps. Calculate future deadlines.</p>
-    </header>
+<div class="wrapper">
 
-    <!-- Input -->
-    <div class="input-card">
-      <label class="field-label" for="epochInput">Unix Timestamp (seconds or milliseconds)</label>
-      <div class="input-row">
-        <input type="text" id="epochInput" placeholder="e.g. 1713340800" autocomplete="off" spellcheck="false" />
-        <button class="btn-convert" onclick="convert()">Convert</button>
+  <header>
+    <div class="logo"><span class="logo-dot"></span>Utility Tool</div>
+    <h1>EPOCH<span>·</span>CONVERTER</h1>
+    <p class="subtitle">Decode timestamps. Calculate configured deadlines.</p>
+  </header>
+
+  <div class="input-card">
+    <label class="field-label" for="epochInput">Unix Timestamp (seconds or milliseconds)</label>
+    <div class="input-row">
+      <input type="text" id="epochInput" placeholder="e.g. 1713340800" autocomplete="off" spellcheck="false" />
+      <button class="btn-convert" onclick="convert()">Convert</button>
+    </div>
+    <div class="error-msg" id="errorMsg">Please enter a valid EPOCH timestamp.</div>
+    <div class="hint"><button onclick="useNow()">Use current time</button></div>
+  </div>
+
+  <div id="results">
+    <div class="sec-label">Converted Timestamp</div>
+    <div class="result-main">
+      <div class="result-main-header">
+        <div>
+          <div class="epoch-display" id="resEpochLbl">—</div>
+          <div class="datetime-big" id="resDatetimeBig">—</div>
+        </div>
+        <button class="btn-copy" id="btnCopy" onclick="copyAll()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Copy All
+        </button>
       </div>
-      <div class="error-msg" id="errorMsg">Please enter a valid EPOCH timestamp.</div>
-      <div class="hint">
-        <button onclick="useNow()">Use current time</button>
+      <div class="meta-grid">
+        <div><div class="meta-key">Local Time</div><div class="meta-val" id="resLocal">—</div></div>
+        <div><div class="meta-key">UTC Time</div><div class="meta-val" id="resUTC">—</div></div>
+        <div><div class="meta-key">Day of Week</div><div class="meta-val" id="resDOW">—</div></div>
+        <div><div class="meta-key">ISO 8601</div><div class="meta-val" id="resISO">—</div></div>
+        <div><div class="meta-key">Week of Year</div><div class="meta-val" id="resWeek">—</div></div>
+        <div><div class="meta-key">Day of Year</div><div class="meta-val" id="resDOY">—</div></div>
       </div>
     </div>
 
-    <!-- Results -->
-    <div id="results">
-      <div class="section-label">Converted Timestamp</div>
+    <div class="sec-label">Calculated Deadlines</div>
+    <div id="deadlines-container"></div>
 
-      <div class="result-main">
-        <div class="result-main-header">
-          <div>
-            <div class="epoch-display" id="resEpochLabel">—</div>
-            <div class="datetime-big" id="resDatetimeBig">—</div>
-          </div>
-          <button class="btn-copy" id="btnCopy" onclick="copyToClipboard()">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-            Copy
-          </button>
-        </div>
-        <div class="result-main-body">
-          <div class="meta-item">
-            <div class="meta-key">Local Time</div>
-            <div class="meta-val" id="resLocal">—</div>
-          </div>
-          <div class="meta-item">
-            <div class="meta-key">UTC Time</div>
-            <div class="meta-val" id="resUTC">—</div>
-          </div>
-          <div class="meta-item">
-            <div class="meta-key">Day of Week</div>
-            <div class="meta-val" id="resDOW">—</div>
-          </div>
-          <div class="meta-item">
-            <div class="meta-key">ISO 8601</div>
-            <div class="meta-val" id="resISO">—</div>
-          </div>
-          <div class="meta-item">
-            <div class="meta-key">Week of Year</div>
-            <div class="meta-val" id="resWeek">—</div>
-          </div>
-          <div class="meta-item">
-            <div class="meta-key">Day of Year</div>
-            <div class="meta-val" id="resDOY">—</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Calculated timestamp -->
-      <div class="result-calc">
-        <div class="result-calc-inner">
-          <div class="calc-label">⟶ Calculated Deadline</div>
-          <div class="calc-rule" id="calcRule">—</div>
-          <div class="calc-grid">
-            <div class="meta-item">
-              <div class="meta-key">Date</div>
-              <div class="calc-val-big" id="calcDate">—</div>
-            </div>
-            <div class="meta-item">
-              <div class="meta-key">EPOCH</div>
-              <div class="calc-val-big" id="calcEpoch">—</div>
-            </div>
-            <div class="meta-item">
-              <div class="meta-key">From Input</div>
-              <div class="meta-val" id="calcDelta">—</div>
-            </div>
-            <div class="meta-item">
-              <div class="meta-key">From Now</div>
-              <div class="meta-val" id="calcFromNow">—</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="utc-strip">
-        <div class="utc-item">
-          <div class="utc-key">Unix (s)</div>
-          <div class="utc-val" id="stripSeconds">—</div>
-        </div>
-        <div class="utc-item">
-          <div class="utc-key">Unix (ms)</div>
-          <div class="utc-val" id="stripMillis">—</div>
-        </div>
-        <div class="utc-item">
-          <div class="utc-key">Relative</div>
-          <div class="utc-val" id="stripRelative">—</div>
-        </div>
-        <div class="utc-item">
-          <div class="utc-key">Timezone</div>
-          <div class="utc-val" id="stripTZ">—</div>
-        </div>
-      </div>
+    <div class="utc-strip">
+      <div><div class="utc-key">Unix (s)</div><div class="utc-val" id="stripS">—</div></div>
+      <div><div class="utc-key">Unix (ms)</div><div class="utc-val" id="stripMs">—</div></div>
+      <div><div class="utc-key">Relative</div><div class="utc-val" id="stripRel">—</div></div>
+      <div><div class="utc-key">Timezone</div><div class="utc-val" id="stripTZ">—</div></div>
     </div>
   </div>
 
-  <script>
-    // ─── Calculation Rule ────────────────────────────────────────────────────
-    // Rule: "From this timestamp, take the last day of March in two years"
-    // i.e.: year-of-input + 2, March 31 (or last real day of March), midnight UTC
-    const RULE_DESCRIPTION = 'Last day of March, 2 years from the input timestamp (end of day, UTC)';
+</div>
+<script>
+// =============================================================================
+//  DEADLINE RULES CONFIG
+//  Edit this array to add, remove, or change deadline rules.
+//  The UI is read-only — only this config controls what deadlines are shown.
+//
+//  Available rule types and their required fields:
+//
+//  { name, type: 'last_day_of_month',   month: 1-12, yearsOffset: N }
+//    → Last day of <month>, N years after the input timestamp's year
+//    Example: last day of March, 2 years out
+//
+//  { name, type: 'first_day_of_month',  month: 1-12, yearsOffset: N }
+//    → First day of <month>, N years after the input timestamp's year
+//
+//  { name, type: 'specific_date',       month: 1-12, day: 1-31, yearsOffset: N }
+//    → Specific month/day, N years after the input timestamp's year
+//
+//  { name, type: 'end_of_year',         yearsOffset: N }
+//    → December 31, N years after the input timestamp's year
+//
+//  { name, type: 'add_days',            days: N }
+//    → Input timestamp + N days
+//
+//  { name, type: 'add_months',          months: N }
+//    → Input timestamp + N months
+//
+//  { name, type: 'add_years',           years: N }
+//    → Input timestamp + N years
+// =============================================================================
+const DEADLINE_RULES = [
+  {
+    name: 'Q1 End +2 Years',
+    type: 'last_day_of_month',
+    month: 3,           // March
+    yearsOffset: 2,
+  },
+  {
+    name: '90-Day Window',
+    type: 'add_days',
+    days: 90,
+  },
+  {
+    name: 'Fiscal Year End +1',
+    type: 'end_of_year',
+    yearsOffset: 1,
+  },
+  {
+    name: 'Renewal Date +3 Years',
+    type: 'specific_date',
+    month: 6,           // June
+    day: 15,
+    yearsOffset: 3,
+  },
+];
+// =============================================================================
+//  END OF CONFIG — do not edit below unless you know what you're doing
+// =============================================================================
 
-    function calcDeadline(inputDate) {
-      const targetYear = inputDate.getUTCFullYear() + 2;
-      // Last day of March = March 31 always (March has 31 days)
-      const deadline = new Date(Date.UTC(targetYear, 2, 31, 23, 59, 59));
-      return deadline;
+const MONTH_NAMES = ['January','February','March','April','May','June',
+                     'July','August','September','October','November','December'];
+const MONTH_SHORT = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const DAY_NAMES   = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+
+function computeDeadline(rule, inputDate) {
+  const y = inputDate.getUTCFullYear();
+  switch (rule.type) {
+    case 'last_day_of_month': {
+      // Day 0 of the next month = last day of this month
+      const target = new Date(Date.UTC(y + (rule.yearsOffset || 0), rule.month, 0, 23, 59, 59));
+      return target;
     }
-
-    // ─── Helpers ─────────────────────────────────────────────────────────────
-    function pad(n) { return String(n).padStart(2, '0'); }
-
-    function getWeekOfYear(d) {
-      const start = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
-      const diff = d - start;
-      return Math.ceil((diff / 86400000 + start.getUTCDay() + 1) / 7);
+    case 'first_day_of_month': {
+      return new Date(Date.UTC(y + (rule.yearsOffset || 0), rule.month - 1, 1, 0, 0, 0));
     }
-
-    function getDayOfYear(d) {
-      const start = new Date(Date.UTC(d.getUTCFullYear(), 0, 0));
-      return Math.floor((d - start) / 86400000);
+    case 'specific_date': {
+      return new Date(Date.UTC(y + (rule.yearsOffset || 0), rule.month - 1, rule.day, 23, 59, 59));
     }
-
-    function humanDuration(ms) {
-      const abs = Math.abs(ms);
-      const s = Math.floor(abs / 1000);
-      const m = Math.floor(s / 60);
-      const h = Math.floor(m / 60);
-      const d = Math.floor(h / 24);
-      const mo = Math.floor(d / 30.44);
-      const y = Math.floor(d / 365.25);
-      let str;
-      if (y >= 1) str = `${y} year${y > 1 ? 's' : ''}, ${Math.floor((d % 365.25) / 30.44)} months`;
-      else if (mo >= 1) str = `${mo} month${mo > 1 ? 's' : ''}, ${Math.floor(d % 30.44)} days`;
-      else if (d >= 1) str = `${d} day${d > 1 ? 's' : ''}, ${h % 24}h`;
-      else if (h >= 1) str = `${h}h ${m % 60}m`;
-      else if (m >= 1) str = `${m}m ${s % 60}s`;
-      else str = `${s}s`;
-      return (ms < 0 ? '− ' : '+ ') + str;
+    case 'end_of_year': {
+      return new Date(Date.UTC(y + (rule.yearsOffset || 0), 11, 31, 23, 59, 59));
     }
-
-    function relativeNow(ts) {
-      const diff = ts * 1000 - Date.now();
-      const abs = Math.abs(diff);
-      const s = Math.floor(abs / 1000);
-      const m = Math.floor(s / 60);
-      const h = Math.floor(m / 60);
-      const d = Math.floor(h / 24);
-      const y = Math.floor(d / 365.25);
-      let str;
-      if (y >= 1) str = `${y}y ago / ahead`;
-      else if (d >= 1) str = `${d} day${d > 1 ? 's' : ''}`;
-      else if (h >= 1) str = `${h}h ${m % 60}m`;
-      else str = `${m}m ${s % 60}s`;
-      return diff < 0 ? str + ' ago' : 'in ' + str;
+    case 'add_days': {
+      return new Date(inputDate.getTime() + (rule.days || 0) * 86400000);
     }
-
-    function formatLocal(d) {
-      return d.toLocaleString(undefined, {
-        year: 'numeric', month: 'short', day: '2-digit',
-        hour: '2-digit', minute: '2-digit', second: '2-digit',
-        hour12: false
-      });
+    case 'add_months': {
+      const d = new Date(inputDate);
+      d.setUTCMonth(d.getUTCMonth() + (rule.months || 0));
+      return d;
     }
-
-    function formatDateBig(d) {
-      const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-      return `${pad(d.getUTCDate())} ${months[d.getUTCMonth()]} ${d.getUTCFullYear()}`;
+    case 'add_years': {
+      const d = new Date(inputDate);
+      d.setUTCFullYear(d.getUTCFullYear() + (rule.years || 0));
+      return d;
     }
+    default:
+      throw new Error(`Unknown rule type: ${rule.type}`);
+  }
+}
 
-    function formatTimeBig(d) {
-      return `${pad(d.getUTCHours())}:${pad(d.getUTCMinutes())}:${pad(d.getUTCSeconds())} UTC`;
-    }
+function ruleDescription(rule) {
+  switch (rule.type) {
+    case 'last_day_of_month':  return `Last day of ${MONTH_NAMES[rule.month - 1]}, +${rule.yearsOffset} year(s) from input`;
+    case 'first_day_of_month': return `First day of ${MONTH_NAMES[rule.month - 1]}, +${rule.yearsOffset} year(s) from input`;
+    case 'specific_date':      return `${MONTH_NAMES[rule.month - 1]} ${rule.day}, +${rule.yearsOffset} year(s) from input`;
+    case 'end_of_year':        return `December 31 (end of year), +${rule.yearsOffset} year(s) from input`;
+    case 'add_days':           return `+${rule.days} days from input timestamp`;
+    case 'add_months':         return `+${rule.months} months from input timestamp`;
+    case 'add_years':          return `+${rule.years} years from input timestamp`;
+    default: return rule.type;
+  }
+}
 
-    const DAYS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-    const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+// ── Helpers ───────────────────────────────────────────────────────────────────
+function pad(n) { return String(n).padStart(2, '0'); }
 
-    // ─── Convert ─────────────────────────────────────────────────────────────
-    let lastTs = null;
-    let lastDeadline = null;
+function formatDateBig(d) {
+  return `${pad(d.getUTCDate())} ${MONTH_SHORT[d.getUTCMonth()]} ${d.getUTCFullYear()}`;
+}
+function formatTimeBig(d) {
+  return `${pad(d.getUTCHours())}:${pad(d.getUTCMinutes())}:${pad(d.getUTCSeconds())} UTC`;
+}
+function formatLocal(d) {
+  return d.toLocaleString(undefined, {
+    year: 'numeric', month: 'short', day: '2-digit',
+    hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false,
+  });
+}
+function getWeekOfYear(d) {
+  const start = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+  return Math.ceil(((d - start) / 86400000 + start.getUTCDay() + 1) / 7);
+}
+function getDayOfYear(d) {
+  return Math.floor((d - new Date(Date.UTC(d.getUTCFullYear(), 0, 0))) / 86400000);
+}
+function humanDuration(ms) {
+  const sign = ms < 0 ? '− ' : '+ ';
+  const abs = Math.abs(ms);
+  const s = Math.floor(abs/1000), m = Math.floor(s/60), h = Math.floor(m/60),
+        days = Math.floor(h/24), mo = Math.floor(days/30.44), y = Math.floor(days/365.25);
+  let str;
+  if      (y >= 1)  str = `${y}y ${Math.floor((days % 365.25) / 30.44)}mo`;
+  else if (mo >= 1) str = `${mo}mo ${Math.floor(days % 30.44)}d`;
+  else if (days>=1) str = `${days}d ${h%24}h`;
+  else if (h >= 1)  str = `${h}h ${m%60}m`;
+  else if (m >= 1)  str = `${m}m ${s%60}s`;
+  else              str = `${s}s`;
+  return sign + str;
+}
+function relativeNow(ts) {
+  const diff = ts * 1000 - Date.now();
+  const abs = Math.abs(diff);
+  const s = Math.floor(abs/1000), m = Math.floor(s/60), h = Math.floor(m/60),
+        days = Math.floor(h/24), y = Math.floor(days/365.25);
+  let str;
+  if      (y >= 1)    str = `${y}y`;
+  else if (days >= 1) str = `${days}d`;
+  else if (h >= 1)    str = `${h}h ${m%60}m`;
+  else                str = `${m}m ${s%60}s`;
+  return diff < 0 ? str + ' ago' : 'in ' + str;
+}
 
-    function convert() {
-      const raw = document.getElementById('epochInput').value.trim();
-      const input = document.getElementById('epochInput');
-      const errMsg = document.getElementById('errorMsg');
+// ── State ─────────────────────────────────────────────────────────────────────
+let lastTs = null;
+let lastDeadlines = [];
 
-      input.classList.remove('error');
-      errMsg.style.display = 'none';
+// ── Convert ───────────────────────────────────────────────────────────────────
+function convert() {
+  const raw = document.getElementById('epochInput').value.trim();
+  const inp = document.getElementById('epochInput');
+  const err = document.getElementById('errorMsg');
+  inp.classList.remove('error');
+  err.style.display = 'none';
 
-      if (!raw || isNaN(raw)) {
-        input.classList.add('error');
-        errMsg.style.display = 'block';
-        return;
-      }
+  if (!raw || isNaN(raw)) {
+    inp.classList.add('error');
+    err.style.display = 'block';
+    return;
+  }
 
-      let ts = Number(raw);
-      // Auto-detect ms vs seconds
-      if (ts > 1e12) ts = Math.floor(ts / 1000);
+  let ts = Number(raw);
+  if (ts > 1e12) ts = Math.floor(ts / 1000); // ms → s
+  lastTs = ts;
 
-      const d = new Date(ts * 1000);
-      lastTs = ts;
+  const d = new Date(ts * 1000);
 
-      // Deadline calc
-      const deadline = calcDeadline(d);
-      lastDeadline = deadline;
-      const deadlineTs = Math.floor(deadline.getTime() / 1000);
+  // Main result
+  document.getElementById('resEpochLbl').textContent = `EPOCH: ${ts}`;
+  document.getElementById('resDatetimeBig').innerHTML =
+    `<span class="date-part">${formatDateBig(d)}</span>&nbsp;&nbsp;${formatTimeBig(d)}`;
+  document.getElementById('resLocal').textContent  = formatLocal(d);
+  document.getElementById('resUTC').textContent    = d.toUTCString().replace(' GMT', ' UTC');
+  document.getElementById('resDOW').textContent    = DAY_NAMES[d.getUTCDay()];
+  document.getElementById('resISO').textContent    = d.toISOString().replace('T', ' ').replace('.000Z', 'Z');
+  document.getElementById('resWeek').textContent   = `Week ${getWeekOfYear(d)}`;
+  document.getElementById('resDOY').textContent    = `Day ${getDayOfYear(d)}`;
 
-      // ── Fill main result ──
-      document.getElementById('resEpochLabel').textContent = `EPOCH: ${ts}`;
-      document.getElementById('resDatetimeBig').innerHTML =
-        `<span class="date-part">${formatDateBig(d)}</span> &nbsp;${formatTimeBig(d)}`;
+  // Bottom strip
+  document.getElementById('stripS').textContent   = ts;
+  document.getElementById('stripMs').textContent  = ts * 1000;
+  document.getElementById('stripRel').textContent = relativeNow(ts);
+  document.getElementById('stripTZ').textContent  = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-      document.getElementById('resLocal').textContent  = formatLocal(d);
-      document.getElementById('resUTC').textContent    = d.toUTCString().replace(' GMT', ' UTC');
-      document.getElementById('resDOW').textContent    = DAYS[d.getUTCDay()];
-      document.getElementById('resISO').textContent    = d.toISOString().replace('T', ' ').replace('.000Z', 'Z');
-      document.getElementById('resWeek').textContent   = `Week ${getWeekOfYear(d)}`;
-      document.getElementById('resDOY').textContent    = `Day ${getDayOfYear(d)}`;
+  // Deadline cards
+  lastDeadlines = [];
+  const container = document.getElementById('deadlines-container');
+  container.innerHTML = '';
 
-      // ── Fill deadline calc ──
-      document.getElementById('calcRule').textContent  = RULE_DESCRIPTION;
-      document.getElementById('calcDate').textContent  = `${formatDateBig(deadline)} ${pad(deadline.getUTCHours())}:${pad(deadline.getUTCMinutes())} UTC`;
-      document.getElementById('calcEpoch').textContent = deadlineTs;
-      document.getElementById('calcDelta').textContent = humanDuration((deadline - d));
-      document.getElementById('calcFromNow').textContent = humanDuration(deadline - new Date());
+  DEADLINE_RULES.forEach((rule, i) => {
+    const dl = computeDeadline(rule, d);
+    const dlTs = Math.floor(dl.getTime() / 1000);
+    lastDeadlines.push({ rule, dl, dlTs });
 
-      // ── Fill strip ──
-      document.getElementById('stripSeconds').textContent  = ts;
-      document.getElementById('stripMillis').textContent   = ts * 1000;
-      document.getElementById('stripRelative').textContent = relativeNow(ts);
-      document.getElementById('stripTZ').textContent       = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const card = document.createElement('div');
+    card.className = `deadline-card dl-c${i % 5}`;
+    card.innerHTML = `
+      <div class="deadline-card-inner">
+        <div class="dl-top">
+          <div>
+            <div class="dl-name">${esc(rule.name)}</div>
+            <div class="dl-desc">${esc(ruleDescription(rule))}</div>
+          </div>
+          <div>
+            <div class="dl-date-big">${formatDateBig(dl)}</div>
+            <div class="dl-epoch-small">${formatTimeBig(dl)}</div>
+          </div>
+        </div>
+        <div class="dl-grid">
+          <div><div class="meta-key">EPOCH (s)</div><div class="meta-val">${dlTs}</div></div>
+          <div><div class="meta-key">EPOCH (ms)</div><div class="meta-val">${dlTs * 1000}</div></div>
+          <div><div class="meta-key">From Input</div><div class="meta-val">${humanDuration(dl - d)}</div></div>
+          <div><div class="meta-key">From Now</div><div class="meta-val">${humanDuration(dl - new Date())}</div></div>
+        </div>
+      </div>`;
+    container.appendChild(card);
+  });
 
-      // Show results
-      const res = document.getElementById('results');
-      res.style.display = 'block';
+  document.getElementById('results').style.display = 'block';
 
-      // Reset copy button
-      const btn = document.getElementById('btnCopy');
+  // Reset copy button
+  const btn = document.getElementById('btnCopy');
+  btn.classList.remove('copied');
+  btn.innerHTML = copyIcon() + ' Copy All';
+}
+
+function esc(s) {
+  return String(s)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+function copyIcon() {
+  return `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>`;
+}
+
+function copyAll() {
+  if (!lastTs) return;
+  const d = new Date(lastTs * 1000);
+  let text = `EPOCH Timestamp : ${lastTs}\n`;
+  text += `Converted       : ${d.toISOString().replace('T',' ').replace('.000Z',' UTC')}\n`;
+  text += `Local           : ${formatLocal(d)}\n`;
+  text += `\n`;
+  lastDeadlines.forEach(({ rule, dl, dlTs }) => {
+    text += `── ${rule.name}\n`;
+    text += `   Rule    : ${ruleDescription(rule)}\n`;
+    text += `   Date    : ${dl.toISOString().replace('T',' ').replace('.000Z',' UTC')}\n`;
+    text += `   EPOCH   : ${dlTs}\n\n`;
+  });
+  navigator.clipboard.writeText(text.trim()).then(() => {
+    const btn = document.getElementById('btnCopy');
+    btn.classList.add('copied');
+    btn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Copied!`;
+    setTimeout(() => {
       btn.classList.remove('copied');
-      btn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy`;
-    }
+      btn.innerHTML = copyIcon() + ' Copy All';
+    }, 2500);
+  });
+}
 
-    function copyToClipboard() {
-      if (!lastTs) return;
-      const d = new Date(lastTs * 1000);
-      const deadlineTs = Math.floor(lastDeadline.getTime() / 1000);
-      const text =
-`EPOCH Timestamp: ${lastTs}
-Converted Date/Time: ${d.toISOString().replace('T', ' ').replace('.000Z', ' UTC')}
-Local: ${formatLocal(d)}
+function useNow() {
+  document.getElementById('epochInput').value = Math.floor(Date.now() / 1000);
+  convert();
+}
 
-Calculated Deadline (${RULE_DESCRIPTION}):
-  Date: ${lastDeadline.toISOString().replace('T', ' ').replace('.000Z', ' UTC')}
-  EPOCH: ${deadlineTs}`;
-
-      navigator.clipboard.writeText(text).then(() => {
-        const btn = document.getElementById('btnCopy');
-        btn.classList.add('copied');
-        btn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Copied!`;
-        setTimeout(() => {
-          btn.classList.remove('copied');
-          btn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy`;
-        }, 2000);
-      });
-    }
-
-    function useNow() {
-      document.getElementById('epochInput').value = Math.floor(Date.now() / 1000);
-      convert();
-    }
-
-    // Enter key support
-    document.getElementById('epochInput').addEventListener('keydown', e => {
-      if (e.key === 'Enter') convert();
-    });
-  </script>
+document.getElementById('epochInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') convert();
+});
+</script>
 </body>
 </html>
