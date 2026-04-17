@@ -1,31 +1,23 @@
-# fly.toml — generated for fly.io deployment
-# Run: fly launch --no-deploy, then fly deploy
+# fly.toml app configuration file generated for epoch-converter on 2026-04-17T07:25:33Z
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
 
-app = "epoch-converter"
-primary_region = "ams"
+app = 'epoch-converter'
+primary_region = 'ams'
 
 [build]
 
 [http_service]
   internal_port = 8080
   force_https = true
-  auto_stop_machines = true
+  auto_stop_machines = 'stop'
   auto_start_machines = true
   min_machines_running = 0
-  processes = ["app"]
-
-[[http_service.checks]]
-  grace_period = "10s"
-  interval = "30s"
-  method = "GET"
-  timeout = "5s"
-  path = "/health"
-
-[env]
-  PORT = "8080"
-  NODE_ENV = "production"
+  processes = ['app']
 
 [[vm]]
-  memory = "256mb"
-  cpu_kind = "shared"
+  memory = '1gb'
+  cpu_kind = 'shared'
   cpus = 1
+  memory_mb = 256
