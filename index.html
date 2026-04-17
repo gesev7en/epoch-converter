@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EPOCH · Converter</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Azeret+Mono:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:       #0b0c0f;
+      --surface:  #13151a;
+      --border:   #1e2028;
+      --border2:  #2a2d38;
+      --accent:   #e8ff47;
+      --accent2:  #47d4ff;
+      --text:     #e8eaf0;
+      --muted:    #555a6e;
+      --danger:   #ff6b6b;
+      --mono:     'Azeret Mono', monospace;
+      --sans:     'DM Sans', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* Subtle grid texture */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 40px 40px;
+      opacity: 0.4;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .wrapper {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 680px;
+      padding: 48px 24px 80px;
+    }
+
+    /* Header */
+    header {
+      margin-bottom: 52px;
+    }
+
+    .logo {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logo-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.8); }
+    }
+
+    h1 {
+      font-family: var(--mono);
+      font-size: clamp(28px, 6vw, 42px);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      color: var(--text);
+    }
+
+    h1 span {
+      color: var(--accent);
+    }
+
+    .subtitle {
+      margin-top: 10px;
+      font-size: 14px;
+      color: var(--muted);
+      font-weight: 300;
+      letter-spacing: 0.01em;
+    }
+
+    /* Input card */
+    .input-card {
+      background: var(--surface);
+      border: 1px solid var(--border2);
+      border-radius: 12px;
+      padding: 28px;
+      margin-bottom: 12px;
+    }
+
+    .field-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    .input-row {
+      display: flex;
+      gap: 10px;
+    }
+
+    input[type="text"] {
+      flex: 1;
+      background: var(--bg);
+      border: 1px solid var(--border2);
+      border-radius: 8px;
+      padding: 14px 18px;
+      font-family: var(--mono);
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      min-width: 0;
+    }
+
+    input[type="text"]::placeholder {
+      color: var(--muted);
+      font-weight: 300;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(232, 255, 71, 0.08);
+    }
+
+    input[type="text"].error {
+      border-color: var(--danger);
+      box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.08);
+    }
+
+    .btn-convert {
+      background: var(--accent);
+      color: #0b0c0f;
+      border: none;
+      border-radius: 8px;
+      padding: 14px 24px;
+      font-family: var(--mono);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.15s, transform 0.1s;
+    }
+
+    .btn-convert:hover { background: #d4eb2e; }
+    .btn-convert:active { transform: scale(0.97); }
+
+    .error-msg {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--danger);
+      margin-top: 8px;
+      display: none;
+    }
+
+    /* Quick-insert hint */
+    .hint {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 10px;
+    }
+
+    .hint button {
+      background: none;
+      border: none;
+      color: var(--accent2);
+      font-family: var(--mono);
+      font-size: 12px;
+      cursor: pointer;
+      padding: 0;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    /* Results */
+    #results {
+      display: none;
+      animation: slideUp 0.3s ease;
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .section-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    /* Main result block */
+    .result-main {
+      background: var(--surface);
+      border: 1px solid var(--border2);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+
+    .result-main-header {
+      background: linear-gradient(135deg, rgba(232,255,71,0.06) 0%, transparent 60%);
+      border-bottom: 1px solid var(--border2);
+      padding: 20px 24px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .epoch-display {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 4px;
+      letter-spacing: 0.1em;
+    }
+
+    .datetime-big {
+      font-family: var(--mono);
+      font-size: clamp(18px, 4vw, 26px);
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: -0.01em;
+    }
+
+    .datetime-big .date-part { color: var(--accent); }
+
+    .btn-copy {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border2);
+      border-radius: 6px;
+      padding: 8px 14px;
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.15s;
+      flex-shrink: 0;
+    }
+
+    .btn-copy:hover {
+      background: rgba(232,255,71,0.06);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .btn-copy.copied {
+      background: rgba(232,255,71,0.1);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .result-main-body {
+      padding: 16px 24px 20px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .meta-item {}
+
+    .meta-key {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 3px;
+    }
+
+    .meta-val {
+      font-family: var(--mono);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    /* Calculated timestamp block */
+    .result-calc {
+      background: var(--surface);
+      border: 1px solid var(--border2);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 12px;
+      position: relative;
+    }
+
+    .result-calc::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent2), transparent);
+    }
+
+    .result-calc-inner {
+      padding: 20px 24px;
+    }
+
+    .calc-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent2);
+      margin-bottom: 6px;
+    }
+
+    .calc-rule {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 14px;
+      line-height: 1.5;
+    }
+
+    .calc-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .calc-val-big {
+      font-family: var(--mono);
+      font-size: clamp(15px, 3vw, 20px);
+      font-weight: 600;
+      color: var(--accent2);
+    }
+
+    /* Divider */
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 20px 0;
+    }
+
+    /* UTC strip at bottom */
+    .utc-strip {
+      background: var(--surface);
+      border: 1px solid var(--border2);
+      border-radius: 8px;
+      padding: 14px 20px;
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .utc-item {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .utc-key {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .utc-val {
+      font-family: var(--mono);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    @media (max-width: 500px) {
+      .result-main-body { grid-template-columns: 1fr; }
+      .calc-grid { grid-template-columns: 1fr; }
+      .input-row { flex-direction: column; }
+      .btn-convert { width: 100%; }
+      .result-main-header { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <header>
+      <div class="logo"><span class="logo-dot"></span>Utility Tool</div>
+      <h1>EPOCH<span>·</span>CONVERTER</h1>
+      <p class="subtitle">Decode timestamps. Calculate future deadlines.</p>
+    </header>
+
+    <!-- Input -->
+    <div class="input-card">
+      <label class="field-label" for="epochInput">Unix Timestamp (seconds or milliseconds)</label>
+      <div class="input-row">
+        <input type="text" id="epochInput" placeholder="e.g. 1713340800" autocomplete="off" spellcheck="false" />
+        <button class="btn-convert" onclick="convert()">Convert</button>
+      </div>
+      <div class="error-msg" id="errorMsg">Please enter a valid EPOCH timestamp.</div>
+      <div class="hint">
+        <button onclick="useNow()">Use current time</button>
+      </div>
+    </div>
+
+    <!-- Results -->
+    <div id="results">
+      <div class="section-label">Converted Timestamp</div>
+
+      <div class="result-main">
+        <div class="result-main-header">
+          <div>
+            <div class="epoch-display" id="resEpochLabel">—</div>
+            <div class="datetime-big" id="resDatetimeBig">—</div>
+          </div>
+          <button class="btn-copy" id="btnCopy" onclick="copyToClipboard()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            Copy
+          </button>
+        </div>
+        <div class="result-main-body">
+          <div class="meta-item">
+            <div class="meta-key">Local Time</div>
+            <div class="meta-val" id="resLocal">—</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-key">UTC Time</div>
+            <div class="meta-val" id="resUTC">—</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-key">Day of Week</div>
+            <div class="meta-val" id="resDOW">—</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-key">ISO 8601</div>
+            <div class="meta-val" id="resISO">—</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-key">Week of Year</div>
+            <div class="meta-val" id="resWeek">—</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-key">Day of Year</div>
+            <div class="meta-val" id="resDOY">—</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Calculated timestamp -->
+      <div class="result-calc">
+        <div class="result-calc-inner">
+          <div class="calc-label">⟶ Calculated Deadline</div>
+          <div class="calc-rule" id="calcRule">—</div>
+          <div class="calc-grid">
+            <div class="meta-item">
+              <div class="meta-key">Date</div>
+              <div class="calc-val-big" id="calcDate">—</div>
+            </div>
+            <div class="meta-item">
+              <div class="meta-key">EPOCH</div>
+              <div class="calc-val-big" id="calcEpoch">—</div>
+            </div>
+            <div class="meta-item">
+              <div class="meta-key">From Input</div>
+              <div class="meta-val" id="calcDelta">—</div>
+            </div>
+            <div class="meta-item">
+              <div class="meta-key">From Now</div>
+              <div class="meta-val" id="calcFromNow">—</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="utc-strip">
+        <div class="utc-item">
+          <div class="utc-key">Unix (s)</div>
+          <div class="utc-val" id="stripSeconds">—</div>
+        </div>
+        <div class="utc-item">
+          <div class="utc-key">Unix (ms)</div>
+          <div class="utc-val" id="stripMillis">—</div>
+        </div>
+        <div class="utc-item">
+          <div class="utc-key">Relative</div>
+          <div class="utc-val" id="stripRelative">—</div>
+        </div>
+        <div class="utc-item">
+          <div class="utc-key">Timezone</div>
+          <div class="utc-val" id="stripTZ">—</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ─── Calculation Rule ────────────────────────────────────────────────────
+    // Rule: "From this timestamp, take the last day of March in two years"
+    // i.e.: year-of-input + 2, March 31 (or last real day of March), midnight UTC
+    const RULE_DESCRIPTION = 'Last day of March, 2 years from the input timestamp (end of day, UTC)';
+
+    function calcDeadline(inputDate) {
+      const targetYear = inputDate.getUTCFullYear() + 2;
+      // Last day of March = March 31 always (March has 31 days)
+      const deadline = new Date(Date.UTC(targetYear, 2, 31, 23, 59, 59));
+      return deadline;
+    }
+
+    // ─── Helpers ─────────────────────────────────────────────────────────────
+    function pad(n) { return String(n).padStart(2, '0'); }
+
+    function getWeekOfYear(d) {
+      const start = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+      const diff = d - start;
+      return Math.ceil((diff / 86400000 + start.getUTCDay() + 1) / 7);
+    }
+
+    function getDayOfYear(d) {
+      const start = new Date(Date.UTC(d.getUTCFullYear(), 0, 0));
+      return Math.floor((d - start) / 86400000);
+    }
+
+    function humanDuration(ms) {
+      const abs = Math.abs(ms);
+      const s = Math.floor(abs / 1000);
+      const m = Math.floor(s / 60);
+      const h = Math.floor(m / 60);
+      const d = Math.floor(h / 24);
+      const mo = Math.floor(d / 30.44);
+      const y = Math.floor(d / 365.25);
+      let str;
+      if (y >= 1) str = `${y} year${y > 1 ? 's' : ''}, ${Math.floor((d % 365.25) / 30.44)} months`;
+      else if (mo >= 1) str = `${mo} month${mo > 1 ? 's' : ''}, ${Math.floor(d % 30.44)} days`;
+      else if (d >= 1) str = `${d} day${d > 1 ? 's' : ''}, ${h % 24}h`;
+      else if (h >= 1) str = `${h}h ${m % 60}m`;
+      else if (m >= 1) str = `${m}m ${s % 60}s`;
+      else str = `${s}s`;
+      return (ms < 0 ? '− ' : '+ ') + str;
+    }
+
+    function relativeNow(ts) {
+      const diff = ts * 1000 - Date.now();
+      const abs = Math.abs(diff);
+      const s = Math.floor(abs / 1000);
+      const m = Math.floor(s / 60);
+      const h = Math.floor(m / 60);
+      const d = Math.floor(h / 24);
+      const y = Math.floor(d / 365.25);
+      let str;
+      if (y >= 1) str = `${y}y ago / ahead`;
+      else if (d >= 1) str = `${d} day${d > 1 ? 's' : ''}`;
+      else if (h >= 1) str = `${h}h ${m % 60}m`;
+      else str = `${m}m ${s % 60}s`;
+      return diff < 0 ? str + ' ago' : 'in ' + str;
+    }
+
+    function formatLocal(d) {
+      return d.toLocaleString(undefined, {
+        year: 'numeric', month: 'short', day: '2-digit',
+        hour: '2-digit', minute: '2-digit', second: '2-digit',
+        hour12: false
+      });
+    }
+
+    function formatDateBig(d) {
+      const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+      return `${pad(d.getUTCDate())} ${months[d.getUTCMonth()]} ${d.getUTCFullYear()}`;
+    }
+
+    function formatTimeBig(d) {
+      return `${pad(d.getUTCHours())}:${pad(d.getUTCMinutes())}:${pad(d.getUTCSeconds())} UTC`;
+    }
+
+    const DAYS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+    const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+    // ─── Convert ─────────────────────────────────────────────────────────────
+    let lastTs = null;
+    let lastDeadline = null;
+
+    function convert() {
+      const raw = document.getElementById('epochInput').value.trim();
+      const input = document.getElementById('epochInput');
+      const errMsg = document.getElementById('errorMsg');
+
+      input.classList.remove('error');
+      errMsg.style.display = 'none';
+
+      if (!raw || isNaN(raw)) {
+        input.classList.add('error');
+        errMsg.style.display = 'block';
+        return;
+      }
+
+      let ts = Number(raw);
+      // Auto-detect ms vs seconds
+      if (ts > 1e12) ts = Math.floor(ts / 1000);
+
+      const d = new Date(ts * 1000);
+      lastTs = ts;
+
+      // Deadline calc
+      const deadline = calcDeadline(d);
+      lastDeadline = deadline;
+      const deadlineTs = Math.floor(deadline.getTime() / 1000);
+
+      // ── Fill main result ──
+      document.getElementById('resEpochLabel').textContent = `EPOCH: ${ts}`;
+      document.getElementById('resDatetimeBig').innerHTML =
+        `<span class="date-part">${formatDateBig(d)}</span> &nbsp;${formatTimeBig(d)}`;
+
+      document.getElementById('resLocal').textContent  = formatLocal(d);
+      document.getElementById('resUTC').textContent    = d.toUTCString().replace(' GMT', ' UTC');
+      document.getElementById('resDOW').textContent    = DAYS[d.getUTCDay()];
+      document.getElementById('resISO').textContent    = d.toISOString().replace('T', ' ').replace('.000Z', 'Z');
+      document.getElementById('resWeek').textContent   = `Week ${getWeekOfYear(d)}`;
+      document.getElementById('resDOY').textContent    = `Day ${getDayOfYear(d)}`;
+
+      // ── Fill deadline calc ──
+      document.getElementById('calcRule').textContent  = RULE_DESCRIPTION;
+      document.getElementById('calcDate').textContent  = `${formatDateBig(deadline)} ${pad(deadline.getUTCHours())}:${pad(deadline.getUTCMinutes())} UTC`;
+      document.getElementById('calcEpoch').textContent = deadlineTs;
+      document.getElementById('calcDelta').textContent = humanDuration((deadline - d));
+      document.getElementById('calcFromNow').textContent = humanDuration(deadline - new Date());
+
+      // ── Fill strip ──
+      document.getElementById('stripSeconds').textContent  = ts;
+      document.getElementById('stripMillis').textContent   = ts * 1000;
+      document.getElementById('stripRelative').textContent = relativeNow(ts);
+      document.getElementById('stripTZ').textContent       = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+      // Show results
+      const res = document.getElementById('results');
+      res.style.display = 'block';
+
+      // Reset copy button
+      const btn = document.getElementById('btnCopy');
+      btn.classList.remove('copied');
+      btn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy`;
+    }
+
+    function copyToClipboard() {
+      if (!lastTs) return;
+      const d = new Date(lastTs * 1000);
+      const deadlineTs = Math.floor(lastDeadline.getTime() / 1000);
+      const text =
+`EPOCH Timestamp: ${lastTs}
+Converted Date/Time: ${d.toISOString().replace('T', ' ').replace('.000Z', ' UTC')}
+Local: ${formatLocal(d)}
+
+Calculated Deadline (${RULE_DESCRIPTION}):
+  Date: ${lastDeadline.toISOString().replace('T', ' ').replace('.000Z', ' UTC')}
+  EPOCH: ${deadlineTs}`;
+
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = document.getElementById('btnCopy');
+        btn.classList.add('copied');
+        btn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Copied!`;
+        setTimeout(() => {
+          btn.classList.remove('copied');
+          btn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy`;
+        }, 2000);
+      });
+    }
+
+    function useNow() {
+      document.getElementById('epochInput').value = Math.floor(Date.now() / 1000);
+      convert();
+    }
+
+    // Enter key support
+    document.getElementById('epochInput').addEventListener('keydown', e => {
+      if (e.key === 'Enter') convert();
+    });
+  </script>
+</body>
+</html>
